@@ -1,26 +1,58 @@
+/*
+  Change summary:
+  - What: FetchBlok visual tokens, fonts, and global chrome.
+  - Why: The live site uses Inter + Playfair Display, light pages, and intentional dark bands.
+  - Related: app/layout.tsx, all page components.
+  - MCP Context 7: Tailwind v4 @theme tokens from /websites/tailwindcss.
+*/
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* --- Brand tokens (roles stay consistent across every page) --- */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+  --color-ink: #0a1628;
+  --color-muted: #64748b;
+  --color-soft: #94a3b8;
+  --color-page: #ffffff;
+  --color-mist: #f8fafc;
+  --color-line: #e2e8f0;
+  --color-accent: #22d3ee;
+  --color-accent-deep: #0891b2;
+  --color-brand: #0e7490;
+  --color-brand-bright: #22d3ee;
+  --color-void: #000000;
+  --color-night: #0a0a0c;
+  --color-faq: #050505;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Force a light base so OS dark mode does not invert the agency look */
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Hero floor grid lives on the homepage Hero component so it can match fetchblok.com exactly. */
+
+.serif {
+  font-family: var(--font-playfair), ui-serif, Georgia, serif;
+}
+
+/* Hide default scrollbars on the FAQ question rail */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
