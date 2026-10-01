@@ -23,31 +23,3 @@ export const contact = {
   whatsapp: "https://wa.me/923023368307",
   address: "Islamabad, Pakistan",
 };
-
-// --- Services (business rule: six offers, each has its own route) ---
-export const services = [
-  {
-    slug: "website-development",
-    title: "Website Development",
-    eyebrow: "Turn Visitors Into Customers",
-    blurb:
-      "Fast, search-ready sites built to earn trust, collect enquiries, and grow the business — not just look finished.",
-    summary:
-      "A high-performance storefront that actually converts, built around your offer instead of a generic template.",
-    who: [
-      "Teams stuck with a slow or mobile-unfriendly site",
-      "New brands that need to look established on day one",
-      "Founders who have outgrown locked-down templates",
-    ],
-    why: [
-      "Most buyers judge credibility from the first screen.",
-      "A clear site works as a salesperson after hours.",
-      "Ads and SEO need a single, fast landing hub.",
-    ],
-    packages: [
-      { name: "Landing Page", pages: "1", note: "Focused campaign page" },
-      { name: "Business Website", pages: "3–5", note: "Most requested" },
-      { name: "Custom / Commerce", pages: "6–8", note: "Deeper product flows" },
-    ],
-  },
-] as const;
