@@ -10,12 +10,13 @@ import Link from "next/link";
 import { Container } from "@/components/ui";
 import { PageHero } from "@/components/PageHero";
 import { blogPosts } from "@/lib/data";
+import { pageSearch } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description:
-    "Notes from A&S WebCrafters on business websites, WhatsApp follow-up, hiring a studio, and getting found without paying for every click.",
-};
+export const metadata: Metadata = pageSearch(
+  "/blog",
+  "Notes from A&S WebCrafters on business websites, WhatsApp follow-up, hiring a studio, and getting found without paying for every click.",
+  "Studio Notes",
+);
 
 export default function BlogPage() {
   return (

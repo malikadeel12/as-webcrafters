@@ -6,11 +6,13 @@
 
 import type { Metadata } from "next";
 import { Container } from "@/components/ui";
+import { pageSearch } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "How A&S WebCrafters handles what you type into the contact form on this site.",
-};
+export const metadata: Metadata = pageSearch(
+  "/privacy",
+  "How A&S WebCrafters handles what you type into the contact form on this site.",
+  "Privacy Policy",
+);
 
 export default function PrivacyPage() {
   return (

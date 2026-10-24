@@ -11,12 +11,13 @@ import { Mail, MessageCircle } from "lucide-react";
 import { Container } from "@/components/ui";
 import { contact } from "@/lib/data";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { pageSearch } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Email aswebcrafters@gmail.com, call 0302 3368307, or send a project note. A&S WebCrafters works with clients anywhere.",
-};
+export const metadata: Metadata = pageSearch(
+  "/contact",
+  "Email aswebcrafters@gmail.com, call 0302 3368307, or send a project note. A&S WebCrafters works with clients anywhere.",
+  "Contact",
+);
 
 export default function ContactPage() {
   return (

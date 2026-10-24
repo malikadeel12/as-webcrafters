@@ -12,12 +12,13 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { founders, techGroups } from "@/lib/data";
 import { FounderSocials } from "@/components/FounderSocials";
+import { pageSearch } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description:
-    "Adeel Riaz designs and builds the work himself. A&S WebCrafters takes clients anywhere, and the studio is based in Islamabad.",
-};
+export const metadata: Metadata = pageSearch(
+  "/about",
+  "Adeel Riaz designs and builds the work himself. A&S WebCrafters takes clients anywhere, and the studio is based in Islamabad.",
+  "About Adeel Riaz",
+);
 
 // One founder does the design and the code, so these points stay in the singular.
 const diffs = [

@@ -10,12 +10,13 @@ import { Button, Container } from "@/components/ui";
 import { PageHero } from "@/components/PageHero";
 import { ServicesBento } from "@/components/home/ServicesBento";
 import { processSteps } from "@/lib/data";
+import { pageSearch } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Websites, custom software, search, ads, SaaS, and automation for clients anywhere. The quote comes after the scope is clear.",
-};
+export const metadata: Metadata = pageSearch(
+  "/services",
+  "Websites, custom software, search, ads, SaaS, and automation for clients anywhere. The quote comes after the scope is clear.",
+  "Website and Software Services",
+);
 
 export default function ServicesPage() {
   return (

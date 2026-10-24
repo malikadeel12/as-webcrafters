@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Button, Container } from "@/components/ui";
 import { blogPosts } from "@/lib/data";
+import { siteName, siteUrl } from "@/lib/site";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -21,9 +22,17 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = blogPosts.find((item) => item.slug === slug);
+  const path = `/blog/${slug}`;
   return {
     title: post?.title ?? "Article",
     description: post?.excerpt,
+    // Each article points at its own address, not the blog list.
+    alternates: { canonical: path },
+    openGraph: {
+      url: path,
+      title: post ? `${post.title} | ${siteName}` : "Article",
+      description: post?.excerpt,
+    },
   };
 }
 
@@ -38,6 +47,20 @@ export default async function BlogPostPage({
 
   return (
     <article className="bg-white pt-32 pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.excerpt,
+            mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+            author: { "@type": "Person", name: "Adeel Riaz" },
+            publisher: { "@type": "Organization", name: siteName, url: siteUrl },
+          }),
+        }}
+      />
       <Container className="max-w-3xl">
         <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-brand">
           {post.category} · {post.minutes} min read

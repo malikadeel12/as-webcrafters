@@ -11,12 +11,13 @@ import { Check } from "lucide-react";
 import { Button, Container } from "@/components/ui";
 import { PageHero } from "@/components/PageHero";
 import { leadDesk } from "@/lib/data";
+import { pageSearch } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "WhatsApp Lead Desk",
-  description:
-    "WhatsApp Lead Desk sends a website form lead to your WhatsApp, saves it in one list, and reminds you if nobody replies.",
-};
+export const metadata: Metadata = pageSearch(
+  "/products",
+  "WhatsApp Lead Desk sends a website form lead to your WhatsApp, saves it in one list, and reminds you if nobody replies.",
+  "WhatsApp Lead Desk",
+);
 
 export default function ProductsPage() {
   return (

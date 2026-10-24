@@ -1,10 +1,12 @@
 /*
   Change summary:
-  - What: Homepage without the "Trusted by Founders & Businesses" review row.
-  - Why: That testimonial block was removed from the public page.
-  - Related: components/home sections, including LeadDeskBlock
+  - What: Homepage search details point at www.aswebcrafters.com. The review row stays off.
+  - Why: The .com is the public address. The old testimonial block was not a real result.
+  - Related: lib/site.ts, components/home sections, including LeadDeskBlock
 */
 
+import type { Metadata } from "next";
+import { pageSearch, siteDescription } from "@/lib/site";
 import { Hero } from "@/components/home/Hero";
 import { WhyChoose } from "@/components/home/WhyChoose";
 import { ServicesBento } from "@/components/home/ServicesBento";
@@ -16,6 +18,12 @@ import { TechStack } from "@/components/home/TechStack";
 import { FAQ } from "@/components/home/FAQ";
 import { ClosingCTA } from "@/components/home/ClosingCTA";
 import { faqs } from "@/lib/data";
+
+// The homepage keeps its own canonical so it is not confused with an inner page.
+export const metadata: Metadata = {
+  ...pageSearch("/", siteDescription),
+  title: { absolute: "Custom Websites and Software | A&S WebCrafters" },
+};
 
 export default function Home() {
   return (

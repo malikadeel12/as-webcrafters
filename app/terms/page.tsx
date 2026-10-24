@@ -6,11 +6,13 @@
 
 import type { Metadata } from "next";
 import { Container } from "@/components/ui";
+import { pageSearch } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Terms of Service",
-  description: "How engagements with A&S WebCrafters are scoped, and where prices are shared.",
-};
+export const metadata: Metadata = pageSearch(
+  "/terms",
+  "How engagements with A&S WebCrafters are scoped, and where prices are shared.",
+  "Terms of Service",
+);
 
 export default function TermsPage() {
   return (

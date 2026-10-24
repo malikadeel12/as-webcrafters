@@ -1,9 +1,9 @@
 /*
   Change summary:
-  - What: Shared page shell plus the search title, description, and business details.
-  - Why: Search and link previews should show a studio that works with clients anywhere, based in Islamabad.
-  - Related: app/globals.css, components/Header.tsx, components/Footer.tsx
-  - MCP Context 7: next/font/google and root layout from /vercel/next.js.
+  - What: Search title, description, and business details now use www.aswebcrafters.com.
+  - Why: Link previews were still advertising the old Vercel address after the .com was attached.
+  - Related: lib/site.ts, lib/data.ts founders, app/sitemap.ts
+  - MCP Context 7: metadataBase, robots, and openGraph from /vercel/next.js.
 */
 
 import type { Metadata } from "next";
@@ -11,7 +11,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { contact } from "@/lib/data";
+import { contact, founders } from "@/lib/data";
 import { siteDescription, siteName, siteUrl } from "@/lib/site";
 
 const inter = Inter({
@@ -28,22 +28,35 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "A&S WebCrafters | Custom Websites and Software",
+    default: "Custom Websites and Software | A&S WebCrafters",
     template: "%s | A&S WebCrafters",
   },
   description: siteDescription,
+  // Ask Google to index the public pages. This does not choose a ranking.
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "en",
-    url: siteUrl,
+    url: "/",
     siteName,
-    title: "A&S WebCrafters | Custom Websites and Software",
+    title: "Custom Websites and Software | A&S WebCrafters",
     description: siteDescription,
     images: [{ url: "/logo.png", alt: "A&S WebCrafters" }],
   },
   twitter: {
     card: "summary",
-    title: "A&S WebCrafters | Custom Websites and Software",
+    title: "Custom Websites and Software | A&S WebCrafters",
     description: siteDescription,
     images: ["/logo.png"],
   },
@@ -65,6 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               name: siteName,
               url: siteUrl,
               image: `${siteUrl}/logo.png`,
+              description: siteDescription,
               email: contact.email,
               telephone: contact.phoneTel,
               address: {
@@ -74,6 +88,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               },
               areaServed: "Worldwide",
               founder: { "@type": "Person", name: "Adeel Riaz" },
+              // Public profiles only. These help Google connect the studio to the founder.
+              sameAs: founders[0].socials.filter((item) => item.href.startsWith("http")).map((item) => item.href),
             }),
           }}
         />
