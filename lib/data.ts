@@ -1,8 +1,8 @@
 /*
   Change summary:
-  - What: Shared site content, including WhatsApp Lead Desk as the only product. Testimonials were removed.
-  - Why: One source keeps labels, routes, and CTAs consistent, and the review row is no longer on the site.
-  - Related: app/products/page.tsx, components/home/LeadDeskBlock.tsx
+  - What: Shared site content. Featured Work now includes GT Home Solutions and PA Copilot.
+  - Why: These two live projects belong in the same list as the other client sites.
+  - Related: components/home/FeaturedWork.tsx, public/projects/gt-home-*.png, public/projects/pa-copilot-*.png
   - MCP Context 7: plain data module; no framework API here.
 */
 
@@ -287,6 +287,36 @@ export const caseStudies = [
     services: "Ecommerce Website, UX & Conversion",
     href: "https://e-com-site-mocha.vercel.app/",
     mockTitle: "Shop smarter. Choose better.",
+  },
+  // --- GT Home: a realtor site. The note describes the page, not a sales result. ---
+  {
+    slug: "gt-home",
+    number: "07",
+    industry: "Kansas & Missouri Real Estate",
+    name: "GT Home Solutions",
+    theme: "estate" as const,
+    body:
+      "Dr. Danny Tipton needed a site that introduces him before any listing. We built GT Home Solutions so buyers and sellers in Kansas and Missouri see who he is, and can choose buy or sell on the first screen.",
+    result:
+      "The live page names the agent, the two states he covers, and the next step.",
+    services: "Website Design, Development & Enquiry Path",
+    href: "https://dany-tiptan.vercel.app/",
+    mockTitle: "Your trusted real estate expert.",
+  },
+  // --- PA Copilot: the public entry is the sign-in. Do not invent clinic results. ---
+  {
+    slug: "pa-copilot",
+    number: "08",
+    industry: "Prior Authorization",
+    name: "PA Copilot",
+    theme: "clinic" as const,
+    body:
+      "A clinic tool for prior authorization needed a front door, not a blank login. We built the PA Copilot sign-in so the privacy promise and the product sit beside the form.",
+    result:
+      "The page states the offer in one line, then the sign-in. Open the project to read it.",
+    services: "Product Website, Sign-in & Narrative",
+    href: "https://pa-copliot-gamma.vercel.app/login",
+    mockTitle: "Prior authorization, ready to sign in.",
   },
 ] as const;
 
