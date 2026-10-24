@@ -1,9 +1,9 @@
 /*
   Change summary:
-  - What: Submit opens the visitor's email app with the note, addressed to the founder.
-  - Why: The form does not store anything on a server, so it must not say the scope was received.
-  - Related: app/contact/page.tsx, app/privacy/page.tsx, lib/data.ts contact.email
-  - Business rule: name, phone, email, and primary service are required. The message only leaves when the visitor presses send in their email app.
+  - What: Submit sends the note to the founder's Gmail. The page says "sent" only after that send is accepted.
+  - Why: Opening the visitor's email app left the note unsent unless they pressed send there.
+  - Related: app/api/contact/route.ts, app/contact/page.tsx, app/privacy/page.tsx, lib/data.ts contact.email
+  - Business rule: name, phone, email, and primary service are required. Do not say the note arrived if the send failed.
 */
 
 "use client";
@@ -15,16 +15,20 @@ type Errors = Partial<Record<"name" | "phone" | "email" | "service", string>>;
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [formError, setFormError] = useState("");
   const [errors, setErrors] = useState<Errors>({});
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const data = new FormData(form);
     const name = String(data.get("name") || "").trim();
     const phone = String(data.get("phone") || "").trim();
     const email = String(data.get("email") || "").trim();
     const service = String(data.get("service") || "").trim();
     const message = String(data.get("message") || "").trim();
+    const company = String(data.get("company") || "").trim();
     const next: Errors = {};
 
     if (!name) next.name = "Please add your name.";
@@ -33,27 +37,39 @@ export function ContactForm() {
     if (!service) next.service = "Choose a primary service.";
 
     setErrors(next);
+    setFormError("");
     if (Object.keys(next).length > 0) return;
 
     // --- Hand-off ---
-    // This site has no inbox of its own. The note is placed in the visitor's email app.
-    const serviceTitle = services.find((item) => item.slug === service)?.title ?? service;
-    const subject = encodeURIComponent(`Project note from ${name}`);
-    const body = encodeURIComponent(
-      [`Name: ${name}`, `Phone: ${phone}`, `Email: ${email}`, `Service: ${serviceTitle}`, "", message || "(No extra note)"]
-        .join("\n"),
-    );
-    window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
-    setSent(true);
-    event.currentTarget.reset();
+    // The note is posted to this site, which emails aswebcrafters@gmail.com.
+    // "Sent" is shown only when that email is accepted.
+    setSending(true);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, email, service, message, company }),
+      });
+      const result = (await response.json()) as { ok?: boolean; error?: string };
+      if (!response.ok || !result.ok) {
+        setFormError(result.error || "The note could not be sent. Email the founder directly, or use WhatsApp.");
+        return;
+      }
+      form.reset();
+      setSent(true);
+    } catch {
+      setFormError("The note could not be sent. Email the founder directly, or use WhatsApp.");
+    } finally {
+      setSending(false);
+    }
   }
 
   if (sent) {
     return (
       <div className="rounded-[28px] bg-white p-8 text-center shadow-sm">
-        <p className="serif text-[28px] font-bold">Email app opened.</p>
+        <p className="serif text-[28px] font-bold">Note sent.</p>
         <p className="mt-3 text-[15px] leading-7 text-muted">
-          Press send in your email app. The note is addressed to {contact.email}. Nothing is stored on this website. If the app did not open, write to that address or use WhatsApp.
+          It is in the founder&apos;s inbox at {contact.email}. Nothing else is stored on this website.
         </p>
         <button
           type="button"
@@ -73,7 +89,7 @@ export function ContactForm() {
     <form onSubmit={onSubmit} className="rounded-[28px] bg-white p-6 shadow-sm md:p-8" noValidate>
       <h2 className="text-[22px] font-bold">Send the founder a note</h2>
       <p className="mt-1 text-[14px] text-muted">
-        This opens an email to {contact.email}. It is not sent until you press send there. WhatsApp is faster if you want a reply today.
+        This sends the note to {contact.email}. WhatsApp is faster if you want a reply today.
       </p>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -116,11 +132,15 @@ export function ContactForm() {
           placeholder="Describe the bottleneck, features, or deadline"
         />
       </label>
+      {/* Bots fill this. People never see it. */}
+      <input name="company" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
+      {formError && <p className="mt-4 text-[13px] text-red-600">{formError}</p>}
       <button
         type="submit"
-        className="mt-5 w-full rounded-full bg-brand-bright py-3.5 text-[15px] font-medium text-white hover:bg-brand"
+        disabled={sending}
+        className="mt-5 w-full rounded-full bg-brand-bright py-3.5 text-[15px] font-medium text-white hover:bg-brand disabled:opacity-60"
       >
-        Open email to the founder
+        {sending ? "Sending..." : "Send the note"}
       </button>
     </form>
   );

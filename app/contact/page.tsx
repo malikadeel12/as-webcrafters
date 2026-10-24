@@ -3,7 +3,7 @@
   - What: Contact heading names a website or software project.
   - Why: "Extraordinary" did not tell a client what gets built.
   - Related: components/contact/ContactForm.tsx
-  - Business rule: WhatsApp and email are the real channels. The form only opens an email. Do not promise a reply the site cannot send.
+  - Business rule: WhatsApp and email are the real channels. The form emails the founder. Do not promise a reply time.
 */
 
 import type { Metadata } from "next";
@@ -74,7 +74,7 @@ export default function ContactPage() {
               </div>
               <ol className="mt-4 space-y-3 text-[14px] text-slate-600">
                 <li>
-                  <strong className="text-ink">You send the note.</strong> Email or WhatsApp reaches the founder. The form on this page only opens your email app.
+                  <strong className="text-ink">You send the note.</strong> The form delivers it to the founder&apos;s email. WhatsApp still works if you want a reply today.
                 </li>
                 <li>
                   <strong className="text-ink">The founder reads it.</strong> Adeel replies with what the work is, and a realistic order to build it.
